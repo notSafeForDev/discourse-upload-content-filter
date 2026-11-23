@@ -1,0 +1,36 @@
+plugins:
+  upload_content_filter_enabled:
+    default: false
+    client: false
+  upload_content_filter_rules:
+    type: objects
+    default: []
+    client: false
+    schema:
+      name: rule
+      identifier: extension
+      properties:
+        extension:
+          type: string
+          required: true
+          validations:
+            max_length: 50
+        regex:
+          type: string
+          required: true
+          validations:
+            max_length: 1000
+        message:
+          type: string
+          validations:
+            max_length: 500
+  upload_content_filter_max_file_size:
+    default: 10240
+    min: 1
+    max: 102400
+    client: false
+  upload_content_filter_timeout:
+    default: 1000
+    min: 1
+    max: 10000
+    client: false

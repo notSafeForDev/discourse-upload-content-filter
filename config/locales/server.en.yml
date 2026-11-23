@@ -1,0 +1,10 @@
+en:
+  site_settings:
+    upload_content_filter_enabled: "Enable the upload content filter"
+    upload_content_filter_rules: "Block uploads based on content. Each rule applies to files with the given extension and blocks the upload when the regex matches any string in the file."
+    upload_content_filter_max_file_size: "Files with a filtered extension that are larger than this (in KB) are rejected."
+    upload_content_filter_timeout: "How long (in milliseconds) each regex may take to evaluate. Validations that takes longer are rejected."
+  upload_content_filter:
+    blocked: "This file is not allowed."
+    too_large_to_validate: "This file is too large to be validated."
+    validation_failed: "File validation failed."
