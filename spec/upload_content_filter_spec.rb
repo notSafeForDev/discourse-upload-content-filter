@@ -31,27 +31,19 @@ RSpec.describe UploadCreator do
   end
 
   it "ignores letter case and a leading dot in the rule's extension" do
-    SiteSetting.upload_content_filter_rules = [
-      { "extension" => ".FunScript", "regex" => "fungen" },
-    ].to_json
+    SiteSetting.upload_content_filter_rules = [{ "extension" => ".FunScript", "regex" => "fungen" }].to_json
 
     expect(upload("fungen", filename: "SCRIPT.FUNSCRIPT")).not_to be_persisted
   end
 
   it "shows a generic message when the rule has none" do
-    SiteSetting.upload_content_filter_rules = [
-      { "extension" => "funscript", "regex" => "fungen" },
-    ].to_json
+    SiteSetting.upload_content_filter_rules = [{ "extension" => "funscript", "regex" => "fungen" }].to_json
 
-    expect(upload("fungen").errors.full_messages).to contain_exactly(
-      I18n.t("upload_content_filter.blocked"),
-    )
+    expect(upload("fungen").errors.full_messages).to contain_exactly(I18n.t("upload_content_filter.blocked"))
   end
 
   it "rejects the file when the regex is invalid" do
-    SiteSetting.upload_content_filter_rules = [
-      { "extension" => "funscript", "regex" => "(unclosed" },
-    ].to_json
+    SiteSetting.upload_content_filter_rules = [{ "extension" => "funscript", "regex" => "(unclosed" }].to_json
 
     expect(upload("anything").errors.full_messages).to contain_exactly(
       I18n.t("upload_content_filter.validation_failed"),
@@ -61,9 +53,7 @@ RSpec.describe UploadCreator do
   it "rejects the file when the regex takes too long" do
     SiteSetting.upload_content_filter_timeout = 1
     # The backreference stops Ruby's regex cache from making this pattern fast.
-    SiteSetting.upload_content_filter_rules = [
-      { "extension" => "funscript", "regex" => '^(a+)+\1$' },
-    ].to_json
+    SiteSetting.upload_content_filter_rules = [{ "extension" => "funscript", "regex" => '^(a+)+\1$' }].to_json
 
     expect(upload("a" * 50 + "b").errors.full_messages).to contain_exactly(
       I18n.t("upload_content_filter.validation_failed"),

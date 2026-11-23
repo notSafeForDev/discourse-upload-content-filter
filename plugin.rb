@@ -15,11 +15,8 @@ after_initialize do
 
     extension_string = File.extname(upload.original_filename.to_s).delete_prefix(".").downcase
     rules_array = JSON.parse(SiteSetting.upload_content_filter_rules.presence || "[]")
-    rules_array.each do |rule_hash|
-      rule_hash["extension"] = rule_hash["extension"].delete_prefix(".").downcase
-    end
-    matching_rules_array =
-      rules_array.select { |rule_hash| rule_hash["extension"] == extension_string }
+    rules_array.each { |rule_hash| rule_hash["extension"] = rule_hash["extension"].delete_prefix(".").downcase }
+    matching_rules_array = rules_array.select { |rule_hash| rule_hash["extension"] == extension_string }
     next if matching_rules_array.empty?
 
     max_bytes_integer = SiteSetting.upload_content_filter_max_file_size.kilobytes
